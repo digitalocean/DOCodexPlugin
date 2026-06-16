@@ -22,10 +22,15 @@ other DigitalOcean CLI tools are prohibited.**
 - **Time:** end-to-end takes ~10–15 minutes — roughly 7 minutes waiting for the
   droplet to boot (step 7) plus up to 7 minutes for cloud-init (step 8). This is
   normal; do not abort.
-- **Script paths:** all `scripts/...` paths below are relative to **this skill's
-  directory** (the folder containing this `SKILL.md`). Run them from that
-  directory, or prefix them with its absolute path. Do not assume the current
-  working directory is the plugin root.
+- **Locate the bundled scripts first (do this before Step 2).** The helper
+  scripts live in the `scripts/` folder **next to this `SKILL.md`** (i.e.
+  `provision-droplet/scripts/`). Your current working directory is **not** the
+  skill directory, so bare relative paths like `scripts/keygen.py` will fail.
+  Resolve the absolute directory that contains this `SKILL.md` and call it
+  `<skill_dir>`. If you don't already know it, find it — the installed plugin may
+  nest it under a version folder (e.g. `.../<version>/provision-droplet/`), so
+  locate the directory that actually contains `scripts/keygen.py`. Use
+  `<skill_dir>/scripts/<name>.py` (an absolute path) in **every** command below.
 
 ## Step 1 — Authenticate with DigitalOcean
 
@@ -42,7 +47,7 @@ and report it — do not fall back to doctl or any other tool.
 ## Step 2 — Generate SSH key pair
 
 ```bash
-python3 scripts/keygen.py
+python3 <skill_dir>/scripts/keygen.py
 ```
 
 Parse the JSON output and keep these values for the steps below:
@@ -131,7 +136,7 @@ Call MCP tool **`droplet-create`** (server: `do-droplets`):
 | `Name` | `name` from step 2 | |
 | `Region` | `<region>` from step 4 | |
 | `Size` | `<size>` from step 5 | |
-| `ImageID` | `232086478` | DigitalOcean **Codex Universal** image |
+| `ImageID` | `233103029` | DigitalOcean **Codex Universal** image |
 | `SSHKeys` | `["<key_id>"]` | |
 
 Extract `droplet.id` from the response — this is `<droplet_id>`.
@@ -164,7 +169,7 @@ stop, report it to the user, and offer to delete the droplet (see *Cleanup*).
 ## Step 8 — Configure local SSH
 
 ```bash
-python3 scripts/configure_ssh.py \
+python3 <skill_dir>/scripts/configure_ssh.py \
   --alias codex-<prefix> \
   --ip <ip> \
   --user root \
