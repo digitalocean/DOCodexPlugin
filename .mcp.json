@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "do-accounts": {
+      "url": "https://accounts.mcp.digitalocean.com/mcp",
+      "tool_timeout_sec": 45
+    },
+    "do-droplets": {
+      "url": "https://droplets.mcp.digitalocean.com/mcp",
+      "tool_timeout_sec": 600
+    }
+  }
+}
