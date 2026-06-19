@@ -2,17 +2,16 @@
 
 A Codex plugin that provisions a DigitalOcean droplet from the **Codex Universal**
 image (id `233103029`) and wires it up as a remote SSH workspace for the Codex
-desktop app. It authenticates via the DigitalOcean MCP servers (OAuth — no doctl
-or API tokens), creates and boots the droplet, configures local SSH access, and
-hands off to Codex. The user picks the region and size interactively (with
-sensible defaults), and the droplet is billed hourly until deleted.
+desktop app. It uses the installed Codex DigitalOcean App, creates and boots the
+droplet without doctl or API tokens, configures local SSH access, and hands off
+to Codex. The user picks the region and size interactively (with sensible
+defaults), and the droplet is billed hourly until deleted.
 
 ## Components
 
 ```
 droplet-workspace/
   .codex-plugin/plugin.json          # plugin manifest (name, version, skills path)
-  .mcp.json                          # DigitalOcean MCP servers (do-accounts, do-droplets)
   skills/provision-droplet/
     SKILL.md                         # the step-by-step workflow Codex follows
     ssh_config.tmpl                  # ~/.ssh/config Host block template
@@ -21,11 +20,12 @@ droplet-workspace/
       configure_ssh.py               # writes SSH config, scans host keys, waits for cloud-init
 ```
 
-- **`SKILL.md`** — the orchestration guide. It drives MCP tools (`key-create`,
-  `droplet-create`, `droplet-get`, etc.) and the two scripts in order, prompts
-  the user for region/size, and explains the one manual Codex step at the end.
-- **`.mcp.json`** — declares the two DigitalOcean MCP servers the workflow logs
-  into (`do-accounts`, `do-droplets`).
+- **Codex DigitalOcean App** — required external app integration. Install and
+  authenticate it in Codex before running this plugin; it provides the
+  DigitalOcean tools (`key-create`, `droplet-create`, `droplet-get`, etc.).
+- **`SKILL.md`** — the orchestration guide. It drives the Codex DigitalOcean App
+  tools and the two scripts in order, prompts the user for region/size, and
+  explains the one manual Codex step at the end.
 - **`scripts/keygen.py`** — stdlib-only; mints a unique `adjective-noun-hex4`
   prefix, derives the droplet name / DO key label, and creates the local SSH key.
 - **`scripts/configure_ssh.py`** — stdlib-only; renders `ssh_config.tmpl` into
