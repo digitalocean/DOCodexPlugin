@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "description": "Provision a DigitalOcean droplet through the Codex DigitalOcean App and add it as a Codex remote SSH workspace.",
   "skills": "./skills",
+  "apps": "./.app.json",
   "interface": {
     "displayName": "DO Droplet Workspace",
     "shortDescription": "Provision a DigitalOcean droplet as a Codex remote SSH workspace.",

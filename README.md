@@ -11,7 +11,8 @@ defaults), and the droplet is billed hourly until deleted.
 
 ```
 droplet-workspace/
-  .codex-plugin/plugin.json          # plugin manifest (name, version, skills path)
+  .codex-plugin/plugin.json          # plugin manifest (name, version, skills/apps paths)
+  .app.json                          # connected DigitalOcean app manifest
   skills/provision-droplet/
     SKILL.md                         # the step-by-step workflow Codex follows
     ssh_config.tmpl                  # ~/.ssh/config Host block template
@@ -23,6 +24,9 @@ droplet-workspace/
 - **Codex DigitalOcean App** — required external app integration. Install and
   authenticate it in Codex before running this plugin; it provides the
   DigitalOcean tools (`key-create`, `droplet-create`, `droplet-get`, etc.).
+- **`.app.json`** — the plugin-local app dependency manifest. It binds this
+  plugin to the DigitalOcean app id
+  `asdk_app_v_6a31762ebfbc8191a268e780510911a7`.
 - **`SKILL.md`** — the orchestration guide. It drives the Codex DigitalOcean App
   tools and the two scripts in order, prompts the user for region/size, and
   explains the one manual Codex step at the end.

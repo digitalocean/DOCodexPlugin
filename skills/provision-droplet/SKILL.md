@@ -10,7 +10,7 @@ description: >
 
 Follow these steps in order. Do not skip or reorder them.
 **Only the installed Codex DigitalOcean App tools and the bundled Python scripts
-may be used. doctl, plugin-owned server configs, and any other DigitalOcean CLI
+may be used. doctl, ad hoc integration configs, and any other DigitalOcean CLI
 tools are prohibited.**
 
 ## Before you start
@@ -37,12 +37,12 @@ tools are prohibited.**
 ## Step 1 — Verify DigitalOcean App access
 
 Use the installed Codex DigitalOcean App for all DigitalOcean operations. Do not
-register or log in to separate plugin-owned server integrations.
+register or log in to separate plugin-owned app integrations.
 
 Confirm that the DigitalOcean App tools are available before continuing. If the
 tools are missing or unauthenticated, stop and tell the user to install or
 authenticate the Codex DigitalOcean App. Do not fall back to doctl, API tokens,
-or a bundled server config.
+or a local integration config.
 
 ## Step 2 — Generate SSH key pair
 
