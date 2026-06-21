@@ -1,0 +1,9 @@
+{
+  "apps": {
+    "digitalocean": {
+      "id": "asdk_app_v_6a31762ebfbc8191a268e780510911a7",
+      "category": "Developer Tools",
+      "required": true
+    }
+  }
+}

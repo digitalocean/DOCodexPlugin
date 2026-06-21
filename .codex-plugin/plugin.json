@@ -1,13 +1,13 @@
 {
   "name": "droplet-workspace",
-  "version": "0.2.0",
+  "version": "0.2.0+codex.20260620200511",
   "description": "Provision a DigitalOcean droplet and add it as a Codex remote SSH workspace.",
   "skills": "./skills",
-  "mcpServers": "./.mcp.json",
+  "apps": "./.app.json",
   "interface": {
     "displayName": "DO Droplet Workspace",
     "shortDescription": "Provision a DigitalOcean droplet as a Codex remote SSH workspace.",
-    "longDescription": "Creates a DigitalOcean Codex droplet. Authenticates via OAuth MCP, uploads SSH key via MCP, creates and polls droplet via MCP, then configures local SSH access.",
+    "longDescription": "Creates a DigitalOcean Codex droplet. Uploads an SSH key, creates and polls the droplet via the bundled DigitalOcean app, then configures local SSH access.",
     "developerName": "DigitalOcean",
     "category": "Productivity"
   }
