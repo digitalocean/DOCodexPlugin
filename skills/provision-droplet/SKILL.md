@@ -39,10 +39,16 @@ tools are prohibited.**
 Use the installed Codex DigitalOcean App for all DigitalOcean operations. Do not
 register or log in to separate plugin-owned app integrations.
 
+The app uses a **templated MCP URL** (`{workspace}.digitalocean.mcp`). The
+`{workspace}` value **cannot** be set from the plugin manifest — the user must
+supply it during the app's connection/setup flow. **Set the workspace to
+`droplet`** (resolving to `droplet.digitalocean.mcp`). If the user is prompted
+for a workspace and is unsure, tell them to enter `droplet`.
+
 Confirm that the DigitalOcean App tools are available before continuing. If the
 tools are missing or unauthenticated, stop and tell the user to install or
-authenticate the Codex DigitalOcean App. Do not fall back to doctl, API tokens,
-or a local integration config.
+authenticate the Codex DigitalOcean App (with workspace `droplet`). Do not fall
+back to doctl, API tokens, or a local integration config.
 
 ## Step 2 — Generate SSH key pair
 

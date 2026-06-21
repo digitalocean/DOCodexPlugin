@@ -23,7 +23,9 @@ droplet-workspace/
 
 - **Codex DigitalOcean App** — required external app integration. Install and
   authenticate it in Codex before running this plugin; it provides the
-  DigitalOcean tools (`key-create`, `droplet-create`, `droplet-get`, etc.).
+  DigitalOcean tools (`key-create`, `droplet-create`, `droplet-get`, etc.). The
+  app uses a templated MCP URL (`{workspace}.digitalocean.mcp`); set the
+  workspace to `droplet` when connecting it.
 - **`.app.json`** — the plugin-local app dependency manifest. It binds this
   plugin to the DigitalOcean app id
   `asdk_app_v_6a31762ebfbc8191a268e780510911a7`.
