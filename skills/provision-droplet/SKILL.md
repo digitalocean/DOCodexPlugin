@@ -9,15 +9,16 @@ description: >
 # Provision a DigitalOcean droplet as a Codex remote workspace
 
 Follow these steps in order. Do not skip or reorder them.
-**Only the installed Codex DigitalOcean App tools and the bundled Python scripts
+**Only the installed Codex DigitalOcean app tools and the bundled Python scripts
 may be used. doctl, ad hoc integration configs, and any other DigitalOcean CLI
 tools are prohibited.**
 
 ## Before you start
 
 - **Prerequisites:** a funded DigitalOcean account, the installed and
-  authenticated Codex DigitalOcean App, a local `ssh`/`ssh-keygen` (OpenSSH),
-  Python 3, and the Codex desktop app.
+  authenticated Codex **DigitalOcean Accounts** and **DigitalOcean Droplets**
+  apps, a local `ssh`/`ssh-keygen` (OpenSSH), Python 3, and the Codex desktop
+  app.
 - **Cost:** the droplet bills **hourly from creation until you delete it**.
   Sizes in step 5 show approximate monthly rates. Remind the user to delete it
   when done (see *Cleanup* below).
@@ -34,29 +35,21 @@ tools are prohibited.**
   locate the directory that actually contains `scripts/keygen.py`. Use
   `<skill_dir>/scripts/<name>.py` (an absolute path) in **every** command below.
 
-## Step 1 — Verify DigitalOcean App access
+## Step 1 — Verify DigitalOcean app access
 
-Use the installed Codex DigitalOcean App for all DigitalOcean operations. Do not
-register or log in to separate plugin-owned app integrations.
+This plugin depends on **two** Codex DigitalOcean apps. Use them for all
+DigitalOcean operations; do not register or log in to separate plugin-owned app
+integrations.
 
-The app uses a **templated MCP URL** (`{workspace}.digitalocean.mcp`). The
-`{workspace}` value **cannot** be set from the plugin manifest — the user must
-supply it during the app's connection/setup flow. This workflow uses **two**
-workspaces:
+- **DigitalOcean Accounts** — SSH key tools: `key-create`, `key-list`,
+  `key-delete`.
+- **DigitalOcean Droplets** — droplet tools: `droplet-create`, `droplet-get`,
+  `droplet-delete`.
 
-- **`accounts`** (`accounts.digitalocean.mcp`) — SSH key tools: `key-create`,
-  `key-list`, `key-delete`.
-- **`droplets`** (`droplets.digitalocean.mcp`) — droplet tools:
-  `droplet-create`, `droplet-get`, `droplet-delete`.
-
-Connect the DigitalOcean App to **both** workspaces. If the user is prompted for
-a workspace and is unsure, tell them to enter `accounts` and `droplets`.
-
-Confirm that the DigitalOcean App tools from both workspaces are available
-before continuing. If the tools are missing or unauthenticated, stop and tell
-the user to install or authenticate the Codex DigitalOcean App (workspaces
-`accounts` and `droplets`). Do not fall back to doctl, API tokens, or a local
-integration config.
+Confirm that the tools from **both** apps are available before continuing. If
+either app's tools are missing or unauthenticated, stop and tell the user to
+install or authenticate that app in Codex. Do not fall back to doctl, API
+tokens, or a local integration config.
 
 ## Step 2 — Generate SSH key pair
 
@@ -76,7 +69,7 @@ How these relate (all derived from one random `prefix` like `bright-hawk-a3f2`):
 
 ## Step 3 — Upload SSH public key
 
-Call DigitalOcean App tool **`key-create`** (**`accounts`** workspace):
+Call the **DigitalOcean Accounts** app tool **`key-create`**:
 
 | Parameter | Value |
 |-----------|-------|
@@ -86,8 +79,8 @@ Call DigitalOcean App tool **`key-create`** (**`accounts`** workspace):
 Extract `ssh_key.id` from the response — this is `<key_id>`.
 
 If the call fails because a key with that name or fingerprint **already exists**
-(e.g. a previous run), do not create a duplicate: call DigitalOcean App tool
-**`key-list`** (**`accounts`** workspace), find the entry whose `name` matches
+(e.g. a previous run), do not create a duplicate: call the **DigitalOcean
+Accounts** app tool **`key-list`**, find the entry whose `name` matches
 `key_name` (or whose
 fingerprint matches the uploaded key), and use its `id` as `<key_id>`.
 
@@ -144,7 +137,7 @@ again — do not pass an unlisted value through. The chosen slug is `<size>`.
 
 ## Step 6 — Create droplet
 
-Call DigitalOcean App tool **`droplet-create`** (**`droplets`** workspace):
+Call the **DigitalOcean Droplets** app tool **`droplet-create`**:
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -170,7 +163,7 @@ The uploaded SSH key from step 3 is harmless to leave, but if you abort here see
 
 ## Step 7 — Wait for droplet to become active
 
-Poll DigitalOcean App tool **`droplet-get`** (**`droplets`** workspace) with
+Poll the **DigitalOcean Droplets** app tool **`droplet-get`** with
 `ID: <droplet_id>`, waiting **20 seconds** between calls.
 
 Repeat until the response has `status == "active"` **and** `networks.v4`
@@ -178,7 +171,7 @@ contains an entry with `type == "public"`. Extract `ip_address` from that entry
 — this is `<ip>`.
 
 Poll **at most ~21 times (about 7 minutes)**. Keep polling with the DigitalOcean
-App — do not use doctl or any other tool to check status. If it is still not
+Droplets app — do not use doctl or any other tool to check status. If it is still not
 active after ~21 attempts, stop, report it to the user, and offer to delete the
 droplet (see *Cleanup*).
 
@@ -210,9 +203,9 @@ the remote folder.**
 
 The droplet bills hourly until deleted. To tear down:
 
-1. **Delete the droplet** — DigitalOcean App tool **`droplet-delete`**
-   (**`droplets`** workspace) with `ID: <droplet_id>`.
-2. **Delete the SSH key** (optional) — DigitalOcean App tool **`key-delete`**
-   (**`accounts`** workspace) with the `<key_id>` from step 3.
+1. **Delete the droplet** — **DigitalOcean Droplets** app tool
+   **`droplet-delete`** with `ID: <droplet_id>`.
+2. **Delete the SSH key** (optional) — **DigitalOcean Accounts** app tool
+   **`key-delete`** with the `<key_id>` from step 3.
 
 Always confirm with the user before deleting. Do not use doctl for cleanup.
