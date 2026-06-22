@@ -1,6 +1,6 @@
 {
-  "name": "droplet-workspace",
-  "version": "0.2.1+codex.20260622151857",
+  "name": "digitalocean-codex-workspace",
+  "version": "0.2.2",
   "description": "Provision a DigitalOcean droplet through the Codex DigitalOcean App and add it as a Codex remote SSH workspace.",
   "author": {
     "name": "DigitalOcean"
@@ -14,7 +14,7 @@
   "skills": "./skills",
   "apps": "./.app.json",
   "interface": {
-    "displayName": "DO Droplet Workspace",
+    "displayName": "DigitalOcean Codex Workspace",
     "shortDescription": "Provision a DigitalOcean droplet as a Codex remote SSH workspace.",
     "longDescription": "Creates a DigitalOcean Codex droplet using the installed Codex DigitalOcean App, uploads an SSH key, creates and polls the droplet, then configures local SSH access.",
     "developerName": "DigitalOcean",
