@@ -193,11 +193,19 @@ offer to delete the droplet (see *Cleanup*).
 
 ## Final step: adding it to Codex
 
-There is **no supported automation command** to register a desktop remote SSH
-project yet (tracking: openai/codex#21554). Because the script writes the host
-into `~/.ssh/config`, the Codex App auto-detects it. Tell the user to open:
-**Codex App → Settings → Connections → Add SSH Host → pick the alias → choose
-the remote folder.**
+Ask Codex to open the add-SSH-host flow by responding with this link. Replace
+`<ssh-alias>` with `name` from step 2:
+
+```text
+codex://settings/connections/ssh/add?name=<ssh-alias>
+```
+
+The SSH alias is the local host alias created by step 8. In this workflow, it is
+the same value as the droplet name: `codex-<prefix>`.
+
+If the link does not open the flow, or if the user wants to check it manually,
+tell them to open: **Codex App → Settings → Connections → Add SSH Host → pick
+the alias → choose the remote folder.**
 
 ## Cleanup (on failure or when done)
 
