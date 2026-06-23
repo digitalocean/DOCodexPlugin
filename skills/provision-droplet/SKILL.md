@@ -88,12 +88,14 @@ fingerprint matches the uploaded key), and use its `id` as `<key_id>`.
 
 Ask the user, in chat:
 
-> Use the default region **`nyc3`** (New York, US), or pick a custom region?
+> Use the defaults — region **`nyc3`** (New York, US) and size
+> **`s-2vcpu-4gb`** (2 vCPU / 4 GB, ~$24/mo) — or customize them?
 
-If they choose the default, use `nyc3` as `<region>` and continue.
+If they choose the defaults, use `nyc3` as `<region>` and `s-2vcpu-4gb` as
+`<size>`, then skip step 5 and continue to step 6.
 
-If they want a custom region, present this list and ask them to reply with a
-slug:
+If they want to customize the defaults, present this region list first and ask
+them to reply with a slug:
 
 | Slug | Location |
 |------|----------|
@@ -112,17 +114,11 @@ again — do not pass an unlisted value through. The chosen slug is `<region>`.
 
 ## Step 5 — Choose a droplet size
 
-Ask the user, in chat:
+Skip this step if `<size>` was already set to the default in step 4.
 
-> Use the default size **`s-2vcpu-4gb`** (2 vCPU / 4 GB, ~$24/mo), or pick a
-> custom size?
-
-If they choose the default, use `s-2vcpu-4gb` as `<size>` and continue.
-
-If they want a custom size, present this list and ask them to reply with a
-slug. Every size below is above the **1 vCPU / 2 GB** floor required by the
-Codex Universal image. Prices are approximate — confirm in the DigitalOcean
-dashboard.
+Otherwise, present this size list and ask the user to reply with a slug. Every
+size below is above the **1 vCPU / 2 GB** floor required by the Codex Universal
+image. Prices are approximate — confirm in the DigitalOcean dashboard.
 
 | Slug | vCPU | RAM | Tier | ~$/mo |
 |------|------|-----|------|-------|
