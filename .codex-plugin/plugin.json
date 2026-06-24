@@ -31,6 +31,7 @@
       "Provision a DigitalOcean droplet for Codex."
     ],
     "brandColor": "#1AAFBF",
-    "logo": "./assets/DO_Logo.png"
+    "logo": "./assets/DO_Logo.png",
+    "logoDark": "./assets/DO_Logo_Dark.png"
   }
 }
