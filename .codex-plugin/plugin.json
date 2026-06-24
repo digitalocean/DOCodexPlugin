@@ -5,6 +5,7 @@
   "author": {
     "name": "DigitalOcean"
   },
+  "homepage": "https://www.digitalocean.com/",
   "keywords": [
     "digitalocean",
     "droplet",
@@ -23,10 +24,14 @@
       "Interactive",
       "Write"
     ],
+    "websiteURL": "https://www.digitalocean.com/",
+    "privacyPolicyURL": "https://www.digitalocean.com/legal/privacy-policy",
+    "termsOfServiceURL": "https://www.digitalocean.com/legal/terms-of-service-agreement",
     "defaultPrompt": [
       "Provision a DigitalOcean droplet for Codex."
     ],
     "brandColor": "#1AAFBF",
-    "logo": "./assets/DO_Logo.png"
+    "logo": "./assets/DO_Logo.png",
+    "logoDark": "./assets/DO_Logo_Dark.png"
   }
 }
