@@ -12,6 +12,8 @@ Follow these steps in order. Do not skip or reorder them.
 **Only the installed Codex DigitalOcean app tools and the bundled Python scripts
 may be used. doctl, ad hoc integration configs, and any other DigitalOcean CLI
 tools are prohibited.**
+If the Codex **DigitalOcean** app is not installed, install the required app for
+the user from this plugin's app dependency before continuing.
 
 ## Before you start
 
@@ -45,9 +47,11 @@ The **DigitalOcean** app provides both:
 - Droplet tools: `droplet-create`, `droplet-get`, `droplet-delete`.
 
 Confirm that these tools are available before continuing. If the app's tools are
-missing or unauthenticated, stop and tell the user to install or authenticate
-the DigitalOcean app in Codex. Do not fall back to doctl, API tokens, or a local
-integration config.
+missing because the app is not installed, install the required DigitalOcean app
+for the user from this plugin's app dependency, then confirm the tools are
+available. If the app is installed but unauthenticated, stop and tell the user to
+authenticate the DigitalOcean app in Codex. Do not fall back to doctl, API
+tokens, or a local integration config.
 
 ## Step 2 — Generate SSH key pair
 
