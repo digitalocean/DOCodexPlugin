@@ -2,8 +2,8 @@
 
 A Codex plugin that provisions a DigitalOcean droplet from the **Codex Universal**
 image (id `233103029`) and wires it up as a remote SSH workspace for the Codex
-desktop app. It uses the installed Codex DigitalOcean Accounts and Droplets
-apps, creates and boots the droplet without doctl or API tokens, configures
+desktop app. It uses the installed Codex DigitalOcean app, creates and boots
+the droplet without doctl or API tokens, configures
 local SSH access, and hands off to Codex. The user picks the region and size
 interactively (with sensible defaults), and the droplet is billed hourly until
 deleted.
@@ -13,7 +13,7 @@ deleted.
 ```
 droplet-workspace/
   .codex-plugin/plugin.json          # plugin manifest (name, version, skills/apps paths)
-  .app.json                          # connected DigitalOcean app manifest (Accounts + Droplets)
+  .app.json                          # connected DigitalOcean app manifest
   skills/provision-droplet/
     SKILL.md                         # the step-by-step workflow Codex follows
     ssh_config.tmpl                  # ~/.ssh/config Host block template
@@ -22,16 +22,13 @@ droplet-workspace/
       configure_ssh.py               # writes SSH config, scans host keys, waits for cloud-init
 ```
 
-- **Codex DigitalOcean apps** — two required external app integrations. Install
-  and authenticate both in Codex before running this plugin:
-  - **DigitalOcean Accounts** — SSH key tools (`key-create`, `key-list`,
-    `key-delete`).
-  - **DigitalOcean Droplets** — droplet tools (`droplet-create`, `droplet-get`,
-    `droplet-delete`).
+- **Codex DigitalOcean app** — one required external app integration. Install
+  and authenticate it in Codex before running this plugin. It provides both the
+  SSH key tools (`key-create`, `key-list`, `key-delete`) and the droplet tools
+  (`droplet-create`, `droplet-get`, `droplet-delete`).
 - **`.app.json`** — the plugin-local app dependency manifest. It binds this
-  plugin to the two DigitalOcean app ids: Accounts
-  `asdk_app_6a395072801c81918c90d5e3de24ea83` and Droplets
-  `asdk_app_6a3950a7914c8191bc3ce04d2c6f230d`.
+  plugin to the DigitalOcean app id
+  `asdk_app_6a3bea3a29f8819187a3d1e455407a98`.
 - **`SKILL.md`** — the orchestration guide. It drives the Codex DigitalOcean app
   tools and the two scripts in order, prompts the user for region/size, and
   explains the one manual Codex step at the end.

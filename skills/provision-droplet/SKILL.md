@@ -16,9 +16,8 @@ tools are prohibited.**
 ## Before you start
 
 - **Prerequisites:** a funded DigitalOcean account, the installed and
-  authenticated Codex **DigitalOcean Accounts** and **DigitalOcean Droplets**
-  apps, a local `ssh`/`ssh-keygen` (OpenSSH), Python 3, and the Codex desktop
-  app.
+  authenticated Codex **DigitalOcean** app, a local `ssh`/`ssh-keygen`
+  (OpenSSH), Python 3, and the Codex desktop app.
 - **Cost:** the droplet bills **hourly from creation until you delete it**.
   Sizes in step 5 show approximate monthly rates. Remind the user to delete it
   when done (see *Cleanup* below).
@@ -37,19 +36,18 @@ tools are prohibited.**
 
 ## Step 1 — Verify DigitalOcean app access
 
-This plugin depends on **two** Codex DigitalOcean apps. Use them for all
+This plugin depends on the single Codex **DigitalOcean** app. Use it for all
 DigitalOcean operations; do not register or log in to separate plugin-owned app
 integrations.
 
-- **DigitalOcean Accounts** — SSH key tools: `key-create`, `key-list`,
-  `key-delete`.
-- **DigitalOcean Droplets** — droplet tools: `droplet-create`, `droplet-get`,
-  `droplet-delete`.
+The **DigitalOcean** app provides both:
+- SSH key tools: `key-create`, `key-list`, `key-delete`.
+- Droplet tools: `droplet-create`, `droplet-get`, `droplet-delete`.
 
-Confirm that the tools from **both** apps are available before continuing. If
-either app's tools are missing or unauthenticated, stop and tell the user to
-install or authenticate that app in Codex. Do not fall back to doctl, API
-tokens, or a local integration config.
+Confirm that these tools are available before continuing. If the app's tools are
+missing or unauthenticated, stop and tell the user to install or authenticate
+the DigitalOcean app in Codex. Do not fall back to doctl, API tokens, or a local
+integration config.
 
 ## Step 2 — Generate SSH key pair
 
@@ -69,7 +67,7 @@ How these relate (all derived from one random `prefix` like `bright-hawk-a3f2`):
 
 ## Step 3 — Upload SSH public key
 
-Call the **DigitalOcean Accounts** app tool **`key-create`**:
+Call the **DigitalOcean** app tool **`key-create`**:
 
 | Parameter | Value |
 |-----------|-------|
@@ -79,9 +77,8 @@ Call the **DigitalOcean Accounts** app tool **`key-create`**:
 Extract `ssh_key.id` from the response — this is `<key_id>`.
 
 If the call fails because a key with that name or fingerprint **already exists**
-(e.g. a previous run), do not create a duplicate: call the **DigitalOcean
-Accounts** app tool **`key-list`**, find the entry whose `name` matches
-`key_name` (or whose
+(e.g. a previous run), do not create a duplicate: call the **DigitalOcean** app
+tool **`key-list`**, find the entry whose `name` matches `key_name` (or whose
 fingerprint matches the uploaded key), and use its `id` as `<key_id>`.
 
 ## Step 4 — Choose a region
@@ -133,7 +130,7 @@ again — do not pass an unlisted value through. The chosen slug is `<size>`.
 
 ## Step 6 — Create droplet
 
-Call the **DigitalOcean Droplets** app tool **`droplet-create`**:
+Call the **DigitalOcean** app tool **`droplet-create`**:
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -159,7 +156,7 @@ The uploaded SSH key from step 3 is harmless to leave, but if you abort here see
 
 ## Step 7 — Wait for droplet to become active
 
-Poll the **DigitalOcean Droplets** app tool **`droplet-get`** with
+Poll the **DigitalOcean** app tool **`droplet-get`** with
 `ID: <droplet_id>`, waiting **20 seconds** between calls.
 
 Repeat until the response has `status == "active"` **and** `networks.v4`
@@ -167,7 +164,7 @@ contains an entry with `type == "public"`. Extract `ip_address` from that entry
 — this is `<ip>`.
 
 Poll **at most ~21 times (about 7 minutes)**. Keep polling with the DigitalOcean
-Droplets app — do not use doctl or any other tool to check status. If it is still not
+app — do not use doctl or any other tool to check status. If it is still not
 active after ~21 attempts, stop, report it to the user, and offer to delete the
 droplet (see *Cleanup*).
 
@@ -207,9 +204,9 @@ the alias → choose the remote folder.**
 
 The droplet bills hourly until deleted. To tear down:
 
-1. **Delete the droplet** — **DigitalOcean Droplets** app tool
-   **`droplet-delete`** with `ID: <droplet_id>`.
-2. **Delete the SSH key** (optional) — **DigitalOcean Accounts** app tool
-   **`key-delete`** with the `<key_id>` from step 3.
+1. **Delete the droplet** — **DigitalOcean** app tool **`droplet-delete`** with
+   `ID: <droplet_id>`.
+2. **Delete the SSH key** (optional) — **DigitalOcean** app tool **`key-delete`**
+   with the `<key_id>` from step 3.
 
 Always confirm with the user before deleting. Do not use doctl for cleanup.

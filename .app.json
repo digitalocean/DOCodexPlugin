@@ -1,12 +1,7 @@
 {
   "apps": {
-    "digitalocean-accounts": {
-      "id": "asdk_app_6a395072801c81918c90d5e3de24ea83",
-      "category": "Developer Tools",
-      "required": true
-    },
-    "digitalocean-droplets": {
-      "id": "asdk_app_6a3950a7914c8191bc3ce04d2c6f230d",
+    "digitalocean": {
+      "id": "asdk_app_6a3bea3a29f8819187a3d1e455407a98",
       "category": "Developer Tools",
       "required": true
     }
