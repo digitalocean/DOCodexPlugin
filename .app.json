@@ -1,7 +1,7 @@
 {
   "apps": {
     "digitalocean": {
-      "id": "asdk_app_6a3bea3a29f8819187a3d1e455407a98",
+      "id": "asdk_app_6a3beb98bfec8191b5dcb4e12559c823",
       "category": "Developer Tools",
       "required": true
     }
