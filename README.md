@@ -28,7 +28,7 @@ droplet-workspace/
   (`droplet-create`, `droplet-get`, `droplet-delete`).
 - **`.app.json`** — the plugin-local app dependency manifest. It binds this
   plugin to the DigitalOcean app id
-  `asdk_app_6a3bea3a29f8819187a3d1e455407a98`.
+  `asdk_app_6a3c278c93ac8191b29768648d63a754`.
 - **`SKILL.md`** — the orchestration guide. It drives the Codex DigitalOcean app
   tools and the two scripts in order, prompts the user for region/size, and
   explains the one manual Codex step at the end.
