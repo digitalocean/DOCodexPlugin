@@ -1,10 +1,11 @@
 {
-  "name": "digitalocean-codex-workspace",
-  "version": "0.2.2",
+  "name": "droplet-workspace",
+  "version": "0.2.0",
   "description": "Provision a DigitalOcean droplet through the Codex DigitalOcean App and add it as a Codex remote SSH workspace.",
   "author": {
     "name": "DigitalOcean"
   },
+  "homepage": "https://www.digitalocean.com/",
   "keywords": [
     "digitalocean",
     "droplet",
@@ -23,6 +24,9 @@
       "Interactive",
       "Write"
     ],
+    "websiteURL": "https://www.digitalocean.com/",
+    "privacyPolicyURL": "https://www.digitalocean.com/legal/privacy-policy",
+    "termsOfServiceURL": "https://www.digitalocean.com/legal/terms-of-service-agreement",
     "defaultPrompt": [
       "Provision a DigitalOcean droplet for Codex."
     ],
