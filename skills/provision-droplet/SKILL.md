@@ -22,8 +22,8 @@ tools are prohibited.**
   Sizes in step 5 show approximate monthly rates. Remind the user to delete it
   when done (see *Cleanup* below).
 - **Time:** end-to-end takes ~10–15 minutes — roughly 7 minutes waiting for the
-  droplet to boot (step 7) plus up to 7 minutes for cloud-init (step 8). This is
-  normal; do not abort.
+  droplet to boot (steps 7-8) plus up to 7 minutes for cloud-init (step 9). This
+  is normal; do not abort.
 - **Locate the bundled scripts first (do this before Step 2).** The helper
   scripts live in the `scripts/` folder **next to this `SKILL.md`** (i.e.
   `provision-droplet/scripts/`). Your current working directory is **not** the
@@ -154,21 +154,72 @@ not blindly retry the same values:
 The uploaded SSH key from step 3 is harmless to leave, but if you abort here see
 *Cleanup* below.
 
-## Step 7 — Wait for droplet to become active
+## Step 7 — Schedule delayed deployment check-in
 
-Poll the **DigitalOcean** app tool **`droplet-get`** with
-`ID: <droplet_id>`, waiting **20 seconds** between calls.
+After `droplet-create` succeeds, inspect the response before polling. If the
+droplet is not already `active` with a public IPv4 address in the create
+response, assume provisioning is still in progress.
 
-Repeat until the response has `status == "active"` **and** `networks.v4`
-contains an entry with `type == "public"`. Extract `ip_address` from that entry
-— this is `<ip>`.
+Create a Codex **heartbeat** to resume this same thread in **5 minutes** for
+the first status check. Use the Codex automation tool, not a shell sleep or
+local timer:
 
-Poll **at most ~21 times (about 7 minutes)**. Keep polling with the DigitalOcean
-app — do not use doctl or any other tool to check status. If it is still not
-active after ~21 attempts, stop, report it to the user, and offer to delete the
-droplet (see *Cleanup*).
+| Field | Value |
+|-------|-------|
+| `mode` | `create` |
+| `kind` | `heartbeat` |
+| `destination` | `thread` |
+| `name` | `Check DigitalOcean droplet <name>` |
+| `rrule` | `FREQ=MINUTELY;INTERVAL=5` |
+| `status` | `ACTIVE` |
+| `prompt` | `Resume provisioning DigitalOcean droplet <name> (<droplet_id>). Start at Step 8: check whether it is active and has a public IPv4 address, then continue the workflow. The droplet bills hourly until deleted.` |
 
-## Step 8 — Configure local SSH
+After creating the heartbeat, tell the user the droplet was created and Codex
+will check back in about 5 minutes. **Stop the active turn here.** Do not start
+20-second polling until the heartbeat wakes the thread back up. This avoids
+busy-waiting during the normal 5-7 minute deployment window.
+
+Keep the created heartbeat's automation id as `<heartbeat_id>` if the tool
+returns one. When the heartbeat resumes the thread, use step 8 to decide
+whether to keep checking or to delete/pause the heartbeat and continue.
+
+If the create response already includes `status == "active"` and a public IPv4
+address, skip the heartbeat and continue immediately to step 8.
+
+## Step 8 — Check whether the droplet is active
+
+Call the **DigitalOcean** app tool **`droplet-get`** once with
+`ID: <droplet_id>`.
+
+If the response has `status == "active"` **and** `networks.v4` contains an
+entry with `type == "public"`, extract `ip_address` from that entry — this is
+`<ip>`. Delete or pause `<heartbeat_id>` if it still exists, then continue to
+step 9.
+
+If the droplet is still not active or does not yet have a public IPv4 address,
+schedule Codex to check this same thread again in **1 minute**, then **stop the
+active turn here**. Keep checking back every minute until the droplet is ready;
+do not give up merely because the DigitalOcean deployment is slow. Prefer
+updating the existing `<heartbeat_id>` to a 1-minute interval; if that is not
+possible, create a replacement heartbeat and delete/pause the old one so there
+is only one active check-in.
+
+Use these values for the 1-minute follow-up heartbeat:
+
+| Field | Value |
+|-------|-------|
+| `mode` | `create` or `update`, depending on the available automation tool |
+| `kind` | `heartbeat` |
+| `destination` | `thread` |
+| `name` | `Check DigitalOcean droplet <name>` |
+| `rrule` | `FREQ=MINUTELY;INTERVAL=1` |
+| `status` | `ACTIVE` |
+| `prompt` | `Resume provisioning DigitalOcean droplet <name> (<droplet_id>). Start at Step 8: check whether it is active and has a public IPv4 address, then continue the workflow. If it is still not ready, schedule another 1-minute heartbeat. The droplet bills hourly until deleted.` |
+
+Keep all status checks with the DigitalOcean app — do not use doctl or any other
+tool to check droplet status.
+
+## Step 9 — Configure local SSH
 
 ```bash
 python3 <skill_dir>/scripts/configure_ssh.py \
@@ -186,14 +237,12 @@ offer to delete the droplet (see *Cleanup*).
 
 ## Final step: adding it to Codex
 
-Ask Codex to open the add-SSH-host flow by responding with this link. Replace
-`<ssh-alias>` with `name` from step 2:
+Ask Codex to open the add-SSH-host flow by responding with a clickable Markdown
+link. Replace `<ssh-alias>` with `name` from step 2:
 
-```text
-codex://settings/connections/ssh/add?name=<ssh-alias>
-```
+`[Add <ssh-alias> to Codex SSH](codex://settings/connections/ssh/add?name=<ssh-alias>)`
 
-The SSH alias is the local host alias created by step 8. In this workflow, it is
+The SSH alias is the local host alias created by step 9. In this workflow, it is
 the same value as the droplet name: `codex-<prefix>`.
 
 If the link does not open the flow, or if the user wants to check it manually,
