@@ -15,7 +15,7 @@
   "skills": "./skills",
   "apps": "./.app.json",
   "interface": {
-    "displayName": "DigitalOcean Codex Workspace",
+    "displayName": "DigitalOcean",
     "shortDescription": "Provision a DigitalOcean droplet as a Codex remote SSH workspace.",
     "longDescription": "Creates a DigitalOcean Codex droplet using the installed Codex DigitalOcean App, uploads an SSH key, creates and polls the droplet, then configures local SSH access.",
     "developerName": "DigitalOcean",
